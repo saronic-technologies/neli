@@ -170,6 +170,7 @@ use byteorder::{BigEndian, NativeEndian, ReadBytesExt};
 pub use neli_proc_macros::{neli_enum, FromBytes, FromBytesWithInput, Header, Size, ToBytes};
 
 use crate::{
+    compatibility::NLA_ALIGNTO,
     consts::alignto,
     err::{DeError, SerError},
 };
@@ -206,7 +207,7 @@ pub trait ToBytes: Debug {
     /// Pad a netlink message to the appropriate alignment.
     fn pad(&self, buffer: &mut Cursor<Vec<u8>>) -> Result<(), SerError> {
         let num_pad_bytes = alignto(buffer.position() as usize) - buffer.position() as usize;
-        buffer.write_all(&[0; libc::NLA_ALIGNTO as usize][..num_pad_bytes])?;
+        buffer.write_all(&[0; NLA_ALIGNTO as usize][..num_pad_bytes])?;
         Ok(())
     }
 }
@@ -221,7 +222,7 @@ pub trait FromBytes<'a>: Sized + Debug {
     /// Strip padding from a netlink message.
     fn strip(buffer: &mut Cursor<&'a [u8]>) -> Result<(), DeError> {
         let num_strip_bytes = alignto(buffer.position() as usize) - buffer.position() as usize;
-        buffer.read_exact(&mut [0; libc::NLA_ALIGNTO as usize][..num_strip_bytes])?;
+        buffer.read_exact(&mut [0; NLA_ALIGNTO as usize][..num_strip_bytes])?;
         Ok(())
     }
 }

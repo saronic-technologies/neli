@@ -7,6 +7,14 @@ use neli_proc_macros::neli_enum;
 use crate::{Size, TypeSize};
 
 use crate::{
+    compatibility::{
+        CTRL_CMD_UNSPEC, CTRL_CMD_NEWFAMILY, CTRL_CMD_DELFAMILY, CTRL_CMD_GETFAMILY,
+        CTRL_CMD_NEWOPS, CTRL_CMD_DELOPS, CTRL_CMD_GETOPS, CTRL_CMD_NEWMCAST_GRP,
+        CTRL_CMD_DELMCAST_GRP, CTRL_CMD_GETMCAST_GRP, CTRL_ATTR_UNSPEC, CTRL_ATTR_FAMILY_ID,
+        CTRL_ATTR_FAMILY_NAME, CTRL_ATTR_VERSION, CTRL_ATTR_HDRSIZE, CTRL_ATTR_MAXATTR,
+        CTRL_ATTR_OPS, CTRL_ATTR_MCAST_GROUPS, CTRL_ATTR_MCAST_GRP_UNSPEC,
+        CTRL_ATTR_MCAST_GRP_NAME, CTRL_ATTR_MCAST_GRP_ID,
+    },
     consts::netfilter::{NfLogAttr, NfLogCfg},
     err::{DeError, SerError},
     FromBytes, ToBytes,
@@ -26,16 +34,16 @@ impl_trait!(
 /// Values for `cmd` in [`Genlmsghdr`][crate::genl::Genlmsghdr].
 #[neli_enum(serialized_type = "u8")]
 pub enum CtrlCmd {
-    Unspec = libc::CTRL_CMD_UNSPEC as u8,
-    Newfamily = libc::CTRL_CMD_NEWFAMILY as u8,
-    Delfamily = libc::CTRL_CMD_DELFAMILY as u8,
-    Getfamily = libc::CTRL_CMD_GETFAMILY as u8,
-    Newops = libc::CTRL_CMD_NEWOPS as u8,
-    Delops = libc::CTRL_CMD_DELOPS as u8,
-    Getops = libc::CTRL_CMD_GETOPS as u8,
-    NewmcastGrp = libc::CTRL_CMD_NEWMCAST_GRP as u8,
-    DelmcastGrp = libc::CTRL_CMD_DELMCAST_GRP as u8,
-    GetmcastGrp = libc::CTRL_CMD_GETMCAST_GRP as u8,
+    Unspec = CTRL_CMD_UNSPEC as u8,
+    Newfamily = CTRL_CMD_NEWFAMILY as u8,
+    Delfamily = CTRL_CMD_DELFAMILY as u8,
+    Getfamily = CTRL_CMD_GETFAMILY as u8,
+    Newops = CTRL_CMD_NEWOPS as u8,
+    Delops = CTRL_CMD_DELOPS as u8,
+    Getops = CTRL_CMD_GETOPS as u8,
+    NewmcastGrp = CTRL_CMD_NEWMCAST_GRP as u8,
+    DelmcastGrp = CTRL_CMD_DELMCAST_GRP as u8,
+    GetmcastGrp = CTRL_CMD_GETMCAST_GRP as u8,
 }
 
 impl_trait!(
@@ -56,22 +64,22 @@ impl_trait!(
 /// Values for `nla_type` in [`Nlattr`][crate::genl::Nlattr]
 #[neli_enum(serialized_type = "u16")]
 pub enum CtrlAttr {
-    Unspec = libc::CTRL_ATTR_UNSPEC as u16,
-    FamilyId = libc::CTRL_ATTR_FAMILY_ID as u16,
-    FamilyName = libc::CTRL_ATTR_FAMILY_NAME as u16,
-    Version = libc::CTRL_ATTR_VERSION as u16,
-    Hdrsize = libc::CTRL_ATTR_HDRSIZE as u16,
-    Maxattr = libc::CTRL_ATTR_MAXATTR as u16,
-    Ops = libc::CTRL_ATTR_OPS as u16,
-    McastGroups = libc::CTRL_ATTR_MCAST_GROUPS as u16,
+    Unspec = CTRL_ATTR_UNSPEC as u16,
+    FamilyId = CTRL_ATTR_FAMILY_ID as u16,
+    FamilyName = CTRL_ATTR_FAMILY_NAME as u16,
+    Version = CTRL_ATTR_VERSION as u16,
+    Hdrsize = CTRL_ATTR_HDRSIZE as u16,
+    Maxattr = CTRL_ATTR_MAXATTR as u16,
+    Ops = CTRL_ATTR_OPS as u16,
+    McastGroups = CTRL_ATTR_MCAST_GROUPS as u16,
 }
 
 /// Values for `nla_type` in [`Nlattr`][crate::genl::Nlattr]
 #[neli_enum(serialized_type = "u16")]
 pub enum CtrlAttrMcastGrp {
-    Unspec = libc::CTRL_ATTR_MCAST_GRP_UNSPEC as u16,
-    Name = libc::CTRL_ATTR_MCAST_GRP_NAME as u16,
-    Id = libc::CTRL_ATTR_MCAST_GRP_ID as u16,
+    Unspec = CTRL_ATTR_MCAST_GRP_UNSPEC as u16,
+    Name = CTRL_ATTR_MCAST_GRP_NAME as u16,
+    Id = CTRL_ATTR_MCAST_GRP_ID as u16,
 }
 
 /// Type representing attribute list types as indices

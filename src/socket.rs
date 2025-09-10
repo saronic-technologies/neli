@@ -39,6 +39,7 @@ use libc::{self, c_int, c_void};
 use log::debug;
 
 use crate::{
+    compatibility::{sockaddr_nl, SOL_NETLINK, NETLINK_ADD_MEMBERSHIP, NETLINK_DROP_MEMBERSHIP, NETLINK_LIST_MEMBERSHIPS},
     consts::{genl::*, nl::*, socket::*, MAX_NL_LENGTH},
     err::{NlError, SerError},
     genl::{Genlmsghdr, Nlattr},
@@ -116,7 +117,7 @@ impl NlSocket {
     /// groups. See netlink(7) man pages for more information on
     /// netlink IDs and groups.
     pub fn bind(&self, pid: Option<u32>, groups: &[u32]) -> Result<(), io::Error> {
-        let mut nladdr = unsafe { zeroed::<libc::sockaddr_nl>() };
+        let mut nladdr = unsafe { zeroed::<sockaddr_nl>() };
         nladdr.nl_family = libc::c_int::from(AddrFamily::Netlink) as u16;
         nladdr.nl_pid = pid.unwrap_or(0);
         nladdr.nl_groups = 0;
@@ -124,7 +125,7 @@ impl NlSocket {
             libc::bind(
                 self.fd,
                 &nladdr as *const _ as *const libc::sockaddr,
-                size_of::<libc::sockaddr_nl>() as u32,
+                size_of::<sockaddr_nl>() as u32,
             )
         } {
             i if i >= 0 => (),
@@ -142,8 +143,8 @@ impl NlSocket {
             match unsafe {
                 libc::setsockopt(
                     self.fd,
-                    libc::SOL_NETLINK,
-                    libc::NETLINK_ADD_MEMBERSHIP,
+                    SOL_NETLINK,
+                    NETLINK_ADD_MEMBERSHIP,
                     group as *const _ as *const libc::c_void,
                     size_of::<u32>() as libc::socklen_t,
                 )
@@ -161,8 +162,8 @@ impl NlSocket {
             match unsafe {
                 libc::setsockopt(
                     self.fd,
-                    libc::SOL_NETLINK,
-                    libc::NETLINK_DROP_MEMBERSHIP,
+                    SOL_NETLINK,
+                    NETLINK_DROP_MEMBERSHIP,
                     group as *const _ as *const libc::c_void,
                     size_of::<u32>() as libc::socklen_t,
                 )
@@ -181,8 +182,8 @@ impl NlSocket {
         if unsafe {
             libc::getsockopt(
                 self.fd,
-                libc::SOL_NETLINK,
-                libc::NETLINK_LIST_MEMBERSHIPS,
+                SOL_NETLINK,
+                NETLINK_LIST_MEMBERSHIPS,
                 bit_array.as_mut_slice() as *mut _ as *mut libc::c_void,
                 &mut len as *mut _ as *mut libc::socklen_t,
             )
@@ -195,8 +196,8 @@ impl NlSocket {
             if unsafe {
                 libc::getsockopt(
                     self.fd,
-                    libc::SOL_NETLINK,
-                    libc::NETLINK_LIST_MEMBERSHIPS,
+                    SOL_NETLINK,
+                    NETLINK_LIST_MEMBERSHIPS,
                     bit_array.as_mut_slice() as *mut _ as *mut libc::c_void,
                     &mut len as *mut _ as *mut libc::socklen_t,
                 )
@@ -248,8 +249,8 @@ impl NlSocket {
 
     /// Get the PID for this socket.
     pub fn pid(&self) -> Result<u32, io::Error> {
-        let mut sock_len = size_of::<libc::sockaddr_nl>() as u32;
-        let mut sock_addr: MaybeUninit<libc::sockaddr_nl> = MaybeUninit::uninit();
+        let mut sock_len = size_of::<sockaddr_nl>() as u32;
+        let mut sock_addr: MaybeUninit<sockaddr_nl> = MaybeUninit::uninit();
         match unsafe {
             libc::getsockname(
                 self.fd,

@@ -58,9 +58,11 @@ pub mod rtnl;
 /// Constants related to netlink socket operations
 pub mod socket;
 
+use crate::compatibility::{NLA_ALIGNTO, CTRL_CMD_UNSPEC};
+
 /// Reimplementation of alignto macro in C
 pub fn alignto(len: usize) -> usize {
-    (len + libc::NLA_ALIGNTO as usize - 1) & !(libc::NLA_ALIGNTO as usize - 1)
+    (len + NLA_ALIGNTO as usize - 1) & !(NLA_ALIGNTO as usize - 1)
 }
 
 /// Max supported message length for netlink messages supported by
@@ -74,9 +76,9 @@ mod test {
     #[test]
     fn test_generated_enum_into_from() {
         let unspec: u8 = CtrlCmd::Unspec.into();
-        assert_eq!(unspec, libc::CTRL_CMD_UNSPEC as u8);
+        assert_eq!(unspec, CTRL_CMD_UNSPEC as u8);
 
-        let unspec_variant = CtrlCmd::from(libc::CTRL_CMD_UNSPEC as u8);
+        let unspec_variant = CtrlCmd::from(CTRL_CMD_UNSPEC as u8);
         assert_eq!(unspec_variant, CtrlCmd::Unspec);
     }
 }

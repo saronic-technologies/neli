@@ -7,41 +7,52 @@ use crate as neli;
 
 use neli_proc_macros::neli_enum;
 
+use crate::compatibility::{
+    NFULA_PACKET_HDR, NFULA_MARK, NFULA_TIMESTAMP, NFULA_IFINDEX_INDEV, NFULA_IFINDEX_OUTDEV,
+    NFULA_IFINDEX_PHYSINDEV, NFULA_IFINDEX_PHYSOUTDEV, NFULA_HWADDR, NFULA_PAYLOAD, NFULA_PREFIX,
+    NFULA_UID, NFULA_SEQ, NFULA_SEQ_GLOBAL, NFULA_GID, NFULA_HWTYPE, NFULA_HWHEADER, NFULA_HWLEN,
+    NFULA_CT, NFULA_CT_INFO, NFULA_CFG_CMD, NFULA_CFG_MODE, 
+    NFULA_CFG_NLBUFSIZ, NFULA_CFG_TIMEOUT, NFULA_CFG_QTHRESH, NFULA_CFG_FLAGS,
+    NFNL_SUBSYS_ULOG, NFULNL_MSG_PACKET, NFULNL_MSG_CONFIG, NFULNL_CFG_CMD_BIND, 
+    NFULNL_CFG_CMD_UNBIND, NFULNL_CFG_CMD_PF_BIND, NFULNL_CFG_CMD_PF_UNBIND,
+    NFULNL_COPY_NONE, NFULNL_COPY_META, NFULNL_COPY_PACKET,
+};
+
 /// Attributes inside a netfilter log packet message.
 ///
 /// These are send by the kernel and describe a logged packet.
 #[neli_enum(serialized_type = "u16")]
 pub enum NfLogAttr {
-    PacketHdr = libc::NFULA_PACKET_HDR as u16,
-    Mark = libc::NFULA_MARK as u16,
-    Timestamp = libc::NFULA_TIMESTAMP as u16,
-    IfindexIndev = libc::NFULA_IFINDEX_INDEV as u16,
-    IfindexOutdev = libc::NFULA_IFINDEX_OUTDEV as u16,
-    IfindexPhyindev = libc::NFULA_IFINDEX_PHYSINDEV as u16,
-    IfindexPhyoutdev = libc::NFULA_IFINDEX_PHYSOUTDEV as u16,
-    Hwaddr = libc::NFULA_HWADDR as u16,
-    Payload = libc::NFULA_PAYLOAD as u16,
-    Prefix = libc::NFULA_PREFIX as u16,
-    Uid = libc::NFULA_UID as u16,
-    Seq = libc::NFULA_SEQ as u16,
-    SeqGlobal = libc::NFULA_SEQ_GLOBAL as u16,
-    Gid = libc::NFULA_GID as u16,
-    Hwtype = libc::NFULA_HWTYPE as u16,
-    Hwheader = libc::NFULA_HWHEADER as u16,
-    Hwlen = libc::NFULA_HWLEN as u16,
-    Ct = libc::NFULA_CT as u16,
-    CtInfo = libc::NFULA_CT_INFO as u16,
+    PacketHdr = NFULA_PACKET_HDR as u16,
+    Mark = NFULA_MARK as u16,
+    Timestamp = NFULA_TIMESTAMP as u16,
+    IfindexIndev = NFULA_IFINDEX_INDEV as u16,
+    IfindexOutdev = NFULA_IFINDEX_OUTDEV as u16,
+    IfindexPhyindev = NFULA_IFINDEX_PHYSINDEV as u16,
+    IfindexPhyoutdev = NFULA_IFINDEX_PHYSOUTDEV as u16,
+    Hwaddr = NFULA_HWADDR as u16,
+    Payload = NFULA_PAYLOAD as u16,
+    Prefix = NFULA_PREFIX as u16,
+    Uid = NFULA_UID as u16,
+    Seq = NFULA_SEQ as u16,
+    SeqGlobal = NFULA_SEQ_GLOBAL as u16,
+    Gid = NFULA_GID as u16,
+    Hwtype = NFULA_HWTYPE as u16,
+    Hwheader = NFULA_HWHEADER as u16,
+    Hwlen = NFULA_HWLEN as u16,
+    Ct = NFULA_CT as u16,
+    CtInfo = NFULA_CT_INFO as u16,
 }
 
 /// Configuration attributes for netfilter logging.
 #[neli_enum(serialized_type = "u16")]
 pub enum NfLogCfg {
-    Cmd = libc::NFULA_CFG_CMD as u16,
-    Mode = libc::NFULA_CFG_MODE as u16,
-    NlBufSize = libc::NFULA_CFG_NLBUFSIZ as u16,
-    Timeout = libc::NFULA_CFG_TIMEOUT as u16,
-    QThresh = libc::NFULA_CFG_QTHRESH as u16,
-    Flags = libc::NFULA_CFG_FLAGS as u16,
+    Cmd = NFULA_CFG_CMD as u16,
+    Mode = NFULA_CFG_MODE as u16,
+    NlBufSize = NFULA_CFG_NLBUFSIZ as u16,
+    Timeout = NFULA_CFG_TIMEOUT as u16,
+    QThresh = NFULA_CFG_QTHRESH as u16,
+    Flags = NFULA_CFG_FLAGS as u16,
 }
 
 const fn nfnl_msg_type(subsys: u8, msg: u8) -> u16 {
@@ -56,9 +67,9 @@ const fn nfnl_msg_type(subsys: u8, msg: u8) -> u16 {
 #[neli_enum(serialized_type = "u16")]
 pub enum NetfilterMsg {
     // TODO: Docs here /// A logged packet, going from kernel to userspace.
-    LogPacket = nfnl_msg_type(libc::NFNL_SUBSYS_ULOG as u8, libc::NFULNL_MSG_PACKET as u8),
+    LogPacket = nfnl_msg_type(NFNL_SUBSYS_ULOG as u8, NFULNL_MSG_PACKET as u8),
     // TODO: Docs here /// A logging configuration request, going from userspace to kernel.
-    LogConfig = nfnl_msg_type(libc::NFNL_SUBSYS_ULOG as u8, libc::NFULNL_MSG_CONFIG as u8),
+    LogConfig = nfnl_msg_type(NFNL_SUBSYS_ULOG as u8, NFULNL_MSG_CONFIG as u8),
 }
 
 impl_trait! {
@@ -73,16 +84,16 @@ impl_trait! {
 /// Command value for the [`NfLogCfg::Cmd`].
 #[neli_enum(serialized_type = "u8")]
 pub enum LogCmd {
-    Bind = libc::NFULNL_CFG_CMD_BIND as u8,
-    Unbind = libc::NFULNL_CFG_CMD_UNBIND as u8,
-    PfBind = libc::NFULNL_CFG_CMD_PF_BIND as u8,
-    PfUnbind = libc::NFULNL_CFG_CMD_PF_UNBIND as u8,
+    Bind = NFULNL_CFG_CMD_BIND as u8,
+    Unbind = NFULNL_CFG_CMD_UNBIND as u8,
+    PfBind = NFULNL_CFG_CMD_PF_BIND as u8,
+    PfUnbind = NFULNL_CFG_CMD_PF_UNBIND as u8,
 }
 
 /// Copy mode of the logged packets.
 #[neli_enum(serialized_type = "u8")]
 pub enum LogCopyMode {
-    None = libc::NFULNL_COPY_NONE as u8,
-    Meta = libc::NFULNL_COPY_META as u8,
-    Packet = libc::NFULNL_COPY_PACKET as u8,
+    None = NFULNL_COPY_NONE as u8,
+    Meta = NFULNL_COPY_META as u8,
+    Packet = NFULNL_COPY_PACKET as u8,
 }
