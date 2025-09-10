@@ -144,8 +144,6 @@
 //! valuable contribution as this project aims to be as simple to use
 //! as possible.
 
-#![deny(missing_docs)]
-
 pub mod attr;
 pub mod consts;
 pub mod err;
@@ -157,6 +155,7 @@ pub mod rtnl;
 pub mod socket;
 pub mod types;
 pub mod utils;
+pub mod compatibility;
 
 use crate as neli;
 
