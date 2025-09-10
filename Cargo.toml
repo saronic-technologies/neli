@@ -1,6 +1,6 @@
 [package]
 name = "neli-with-osx"
-version = "0.6.5"
+version = "0.0.1"
 edition = "2018"
 authors = ["John Baublitz <john.m.baublitz@gmail.com>", "Andrew O'Mahony <andrew.omahony@saronic.com>"]
 description = "Type safe netlink library written in Rust with OSX support"
@@ -26,7 +26,7 @@ libc = "0.2.168"
 log = "0.4"
 
 [dependencies.neli-proc-macros]
-version = "0.1"
+version = "0.0.1"
 path = "neli-proc-macros"
 
 [dependencies.tokio]
