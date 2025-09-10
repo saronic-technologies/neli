@@ -1,9 +1,9 @@
 [package]
-name = "neli"
+name = "neli-with-osx"
 version = "0.6.5"
 edition = "2018"
-authors = ["John Baublitz <john.m.baublitz@gmail.com>"]
-description = "Type safe netlink library written in Rust"
+authors = ["John Baublitz <john.m.baublitz@gmail.com>", "Andrew O'Mahony <andrew.omahony@saronic.com>"]
+description = "Type safe netlink library written in Rust with OSX support"
 license = "BSD-3-Clause"
 repository = "https://github.com/jbaublitz/neli"
 keywords = ["netlink"]
